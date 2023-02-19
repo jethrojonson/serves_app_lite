@@ -5,15 +5,19 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Produ
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.NaturalId;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedEntityGraph(
+        name = "company-menu",
+        attributeNodes = {
+                @NamedAttributeNode(
+                        value = "menu"
+                )
+        }
+)
 @Entity
 @Table(name = "companies")
 @AllArgsConstructor
@@ -49,7 +53,7 @@ public class Company extends User<Company> {
 
     @PreRemove
     public void preRemoveActions(){
-        ordersReceived.stream().forEach(o-> o.setCompany(null));
+        ordersReceived.forEach(o-> o.setCompany(null));
         ordersReceived.clear();
     }
 

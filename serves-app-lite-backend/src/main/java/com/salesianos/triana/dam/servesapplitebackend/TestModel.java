@@ -37,7 +37,19 @@ public class TestModel {
                 .price(2.00)
                 .build();
 
-        productRepository.saveAll(List.of(product1));
+        Product product2 = Product.builder()
+                .productName("Completa")
+                .category("Tostada")
+                .price(2.50)
+                .build();
+
+        Product product3 = Product.builder()
+                .productName("Café con leche")
+                .category("Café")
+                .price(1.40)
+                .build();
+
+        productRepository.saveAll(List.of(product1, product2, product3));
 
         //COMPANIES
 
@@ -45,7 +57,7 @@ public class TestModel {
                 .username("chileno69")
                 .cif("A-12345678")
                 .companyName("Café D&N")
-                .menu(List.of(product1))
+                .menu(List.of(product1, product2, product3))
                 .build();
 
         companyRepository.saveAll(List.of(company1));
@@ -62,6 +74,8 @@ public class TestModel {
         customerRepository.saveAll(List.of(customer1));
 
         //ORDERS - SALES LINES
+
+        //1º ORDER
 
         Order order1 = Order.builder().build();
 

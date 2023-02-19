@@ -24,4 +24,7 @@ public class Product {
     private String category;
     private double price;
 
+    @Builder.Default
+    private boolean active = true;
+
 }

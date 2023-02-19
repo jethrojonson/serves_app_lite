@@ -5,13 +5,18 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.Use
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedEntityGraph(
+        name = "customer-orders",
+        attributeNodes = {
+                @NamedAttributeNode(
+                        value = "ordersMade"
+                )
+        }
+)
 @Entity
 @Table(name = "customers")
 @AllArgsConstructor
@@ -31,4 +36,9 @@ public class Customer extends User<Customer> {
     @Builder.Default
     private List<Order> ordersMade = new ArrayList<>();
 
+    @PreRemove
+    public void preRemoveActions(){
+        ordersMade.forEach(o->o.setCustomer(null));
+        ordersMade.clear();
+    }
 }

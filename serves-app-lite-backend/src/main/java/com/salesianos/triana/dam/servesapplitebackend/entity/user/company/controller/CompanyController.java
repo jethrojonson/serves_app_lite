@@ -129,7 +129,7 @@ public class CompanyController {
                     content = @Content
             )
     })
-    @JsonView(CompanyViews.CompanyResponse.class)
+    @JsonView(CompanyViews.FullCompanyResponse.class)
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CompanyDTO getCompanyById(@PathVariable UUID id){

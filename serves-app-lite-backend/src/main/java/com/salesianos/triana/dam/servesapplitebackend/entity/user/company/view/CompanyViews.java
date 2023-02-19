@@ -7,4 +7,6 @@ public interface CompanyViews {
     public class CompanyResponse extends NewCompany{}
 
     public class CompanyUpdate{}
+
+    public class FullCompanyResponse extends CompanyResponse{}
 }

@@ -51,6 +51,8 @@ public class Order {
     @Builder.Default
     private List<Line> salesLine = new ArrayList<>();
 
+    private String username;
+    private String companyName;
     private double total;
 
     //----------------------//
@@ -60,6 +62,7 @@ public class Order {
     public void addToCustomer(Customer c){
         c.getOrdersMade().add(this);
         customer = c;
+        username = c.getUsername();
     }
 
     public void removeFromCustomer(Customer c){
@@ -74,6 +77,7 @@ public class Order {
     public void addToCompany(Company c){
         c.getOrdersReceived().add(this);
         company = c;
+        companyName = c.getCompanyName();
     }
 
     public void removeFromCompany(Company c){
