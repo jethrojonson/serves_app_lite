@@ -24,7 +24,7 @@ public class Line {
     @MapsId("product_id")
     @JoinColumn(
             name = "product_id",
-            foreignKey = @ForeignKey(name = "FK_LINE_PRODUCT")
+            foreignKey = @ForeignKey(name = "FK_SALESLINES_PRODUCTS")
     )
     private Product product;
 
@@ -32,7 +32,7 @@ public class Line {
     @MapsId("order_id")
     @JoinColumn(
             name = "order_id",
-            foreignKey = @ForeignKey(name = "FK_LINE_ORDER")
+            foreignKey = @ForeignKey(name = "FK_SALESLINES_ORDERS")
     )
     private Order order;
 

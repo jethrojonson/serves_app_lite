@@ -37,7 +37,6 @@ public abstract class User <T extends User<T>> {
     private UUID id;
 
     @NaturalId
-    @NonNull
     @Column(unique = true, updatable = false)
     private String username;
 

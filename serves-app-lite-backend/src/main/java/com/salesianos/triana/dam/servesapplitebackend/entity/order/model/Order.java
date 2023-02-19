@@ -30,11 +30,17 @@ public class Order {
     private LocalDateTime orderedAt;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(
+            name = "company_id",
+            foreignKey = @ForeignKey(name = "FK_ORDERS_COMPANIES")
+    )
     private Company company;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(
+            name = "customer_id",
+            foreignKey = @ForeignKey(name = "FK_ORDERS_CUSTOMERS")
+    )
     private Customer customer;
 
     @OneToMany(

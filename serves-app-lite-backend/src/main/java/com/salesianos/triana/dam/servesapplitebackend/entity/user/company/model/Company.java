@@ -47,6 +47,12 @@ public class Company extends User<Company> {
     @Builder.Default
     private List<Order> ordersReceived = new ArrayList<>();
 
+    @PreRemove
+    public void preRemoveActions(){
+        ordersReceived.stream().forEach(o-> o.setCompany(null));
+        ordersReceived.clear();
+    }
+
 
 
 }
