@@ -6,6 +6,7 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.Product
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.service.ProductService;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.view.ProductViews;
+import com.salesianos.triana.dam.servesapplitebackend.validation.annotation.LongID;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -165,8 +166,8 @@ public class ProductController {
     @JsonView({ProductViews.FullProductResponse.class})
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductDTO getProductById(@Min(1) @PathVariable Long id) {
-        return ProductDTO.of(productService.getProductById(id));
+    public ProductDTO getProductById( @PathVariable @Min(1) @LongID String id) {
+        return ProductDTO.of(productService.getProductById(Long.parseLong(id)));
     }
 
     //PUT: EDIT A PRODUCT path --> "/product/{id}" ROLE[ADMIN, COMPANY]
@@ -210,9 +211,9 @@ public class ProductController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductDTO updateAProduct(
-            @Min(1) @PathVariable Long id,
+            @PathVariable @Min(1) @LongID String id,
             @Valid @RequestBody EditProductDTO toUpdate) {
-        return ProductDTO.of(productService.updateAProduct(EditProductDTO.of(toUpdate), id));
+        return ProductDTO.of(productService.updateAProduct(EditProductDTO.of(toUpdate), Long.parseLong(id)));
     }
 
 
@@ -244,7 +245,7 @@ public class ProductController {
     @JsonView(ProductViews.FullProductResponse.class)
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void retireAProduct(@Min(1) @PathVariable Long id) {
-        productService.retireAProduct(id);
+    public void retireAProduct(@PathVariable @Min(1) @LongID String id) {
+        productService.retireAProduct(Long.parseLong(id));
     }
 }
