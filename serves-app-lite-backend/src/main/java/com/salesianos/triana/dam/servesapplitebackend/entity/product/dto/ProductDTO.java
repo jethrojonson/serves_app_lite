@@ -6,6 +6,8 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.view.Produc
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.view.CompanyViews;
 import lombok.*;
 
+import java.net.URI;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -27,6 +29,8 @@ public class ProductDTO {
 
     @JsonView({ProductViews.FullProductResponse.class})
     private boolean active;
+
+    private URI uri;
 
     public static ProductDTO of (Product p){
         return ProductDTO.builder()

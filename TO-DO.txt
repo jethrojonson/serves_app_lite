@@ -1,0 +1,5 @@
+#GENERAL
+* Conversiones de los DTO en los controladores
+
+#SOFT DELETE
+* SOFT DELETE --> retirar productos/ deshabilitar usuarios

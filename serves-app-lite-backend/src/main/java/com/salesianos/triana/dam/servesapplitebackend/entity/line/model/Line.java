@@ -4,7 +4,6 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.line.model.pk.LineP
 import com.salesianos.triana.dam.servesapplitebackend.entity.order.model.Order;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -44,12 +43,12 @@ public class Line {
     //------------------//
 
     public void addToOrder(Order o){
-        o.getSalesLine().add(this);
+        o.getSalesLines().add(this);
         order = o;
     }
 
     public void removeFromOrder(Order o){
-        o.getSalesLine().remove(this);
+        o.getSalesLines().remove(this);
         order = null;
     }
 

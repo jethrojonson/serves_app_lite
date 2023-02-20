@@ -5,7 +5,9 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Produ
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -15,11 +17,23 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public ProductDTO addNewProduct(ProductDTO newProduct){
-        return ProductDTO.of(productRepository.save(ProductDTO.of(newProduct)));
+        Product added = productRepository.save(ProductDTO.of(newProduct));
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(added.getId()).toUri();
+
+        ProductDTO addedRes = ProductDTO.of(added);
+        addedRes.setUri(uri);
+        return addedRes;
     }
 
     public List<ProductDTO> getAllProducts(){
         return productRepository.findAll().stream().map(ProductDTO::of).toList();
+    }
+
+    public List<ProductDTO> getAllActiveProducts(){
+        return productRepository.findAllActive().stream().map(ProductDTO::of).toList();
     }
 
     public ProductDTO getProductById(Long id) {

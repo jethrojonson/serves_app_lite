@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,10 +68,11 @@ public class ProductController {
     )
     @JsonView(ProductViews.ProductResponse.class)
     @PostMapping("/")
-    public ProductDTO addNewProduct(
+    public ResponseEntity<ProductDTO> addNewProduct(
             @JsonView(ProductViews.NewProduct.class)
             @RequestBody ProductDTO newProduct){
-        return productService.addNewProduct(newProduct);
+        ProductDTO res = productService.addNewProduct(newProduct);
+        return ResponseEntity.created(res.getUri()).body(res);
     }
 
     //GET: GET ALL PRODUCTS path --> "/product/ ROLE[ADMIN, COMPANY]
@@ -118,6 +120,12 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    //GET: GET ACTIVE PRODUCTS path --> "/product/active" ROLE[ADMIN, COMPANY]
+    @GetMapping("/active")
+    public List<ProductDTO> getAllActiveProducts(){
+        return productService.getAllActiveProducts();
+    }
+
     //GET: GET A PRODUCT path --> "/product/{id}" ROLE[ADMIN, COMPANY]
     @Operation(summary = "Get a product by id")
     @ApiResponses(value = {
@@ -128,6 +136,11 @@ public class ProductController {
                             examples = {@ExampleObject(
                                     value = """
                                             {
+                                                 "id": 1,
+                                                 "productName": "Estrella Galicia",
+                                                 "category": "Cerveza",
+                                                 "price": 2.0,
+                                                 "active": true
                                             }
                                             """
                             )}

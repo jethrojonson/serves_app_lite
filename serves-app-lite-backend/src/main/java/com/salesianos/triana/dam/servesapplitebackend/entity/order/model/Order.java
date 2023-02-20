@@ -49,10 +49,11 @@ public class Order {
             cascade = CascadeType.MERGE
     )
     @Builder.Default
-    private List<Line> salesLine = new ArrayList<>();
+    private List<Line> salesLines = new ArrayList<>();
 
     private String username;
     private String companyName;
+
     private double total;
 
     //----------------------//
