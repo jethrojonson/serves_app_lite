@@ -1,6 +1,8 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.product.model;
 
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,8 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Builder
+@SQLDelete(sql = "UPDATE products SET active = false WHERE id=?")
+@Where(clause = "active = true")
 public class Product {
 
     @Id

@@ -6,6 +6,7 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.view.Produc
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.view.CompanyViews;
 import lombok.*;
 
+import javax.validation.constraints.*;
 import java.net.URI;
 
 @AllArgsConstructor
@@ -19,18 +20,20 @@ public class ProductDTO {
     private Long id;
 
     @JsonView({ProductViews.NewProduct.class, CompanyViews.FullCompanyResponse.class})
+    @NotEmpty
     private String productName;
 
-    @JsonView({ProductViews.NewProduct.class, ProductViews.ProductUpdate.class, CompanyViews.FullCompanyResponse.class})
+    @JsonView({ProductViews.NewProduct.class,CompanyViews.FullCompanyResponse.class})
+    @NotEmpty
     private String category;
 
-    @JsonView({ProductViews.NewProduct.class, ProductViews.ProductUpdate.class, CompanyViews.FullCompanyResponse.class})
+    @JsonView({ProductViews.NewProduct.class,CompanyViews.FullCompanyResponse.class})
+    @NotNull
+    @DecimalMin(value = "0.001")
     private double price;
 
     @JsonView({ProductViews.FullProductResponse.class})
     private boolean active;
-
-    private URI uri;
 
     public static ProductDTO of (Product p){
         return ProductDTO.builder()

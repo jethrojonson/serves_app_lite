@@ -1,10 +1,11 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.product.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.EditProductDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.ProductDTO;
+import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.service.ProductService;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.view.ProductViews;
-import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.dto.CustomerDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,14 +17,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
 @Tag(name = "Product Controller", description = "Controller of the products operations")
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -70,9 +77,13 @@ public class ProductController {
     @PostMapping("/")
     public ResponseEntity<ProductDTO> addNewProduct(
             @JsonView(ProductViews.NewProduct.class)
-            @RequestBody ProductDTO newProduct){
-        ProductDTO res = productService.addNewProduct(newProduct);
-        return ResponseEntity.created(res.getUri()).body(res);
+            @Valid @RequestBody ProductDTO newProduct) {
+        Product added = productService.addNewProduct(ProductDTO.of(newProduct));
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(added.getId()).toUri();
+        return ResponseEntity.created(uri).body(ProductDTO.of(added));
     }
 
     //GET: GET ALL PRODUCTS path --> "/product/ ROLE[ADMIN, COMPANY]
@@ -116,15 +127,15 @@ public class ProductController {
     @JsonView(ProductViews.ProductResponse.class)
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductDTO> getAllProducts(){
-        return productService.getAllProducts();
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts().stream().map(ProductDTO::of).toList();
     }
 
-    //GET: GET ACTIVE PRODUCTS path --> "/product/active" ROLE[ADMIN, COMPANY]
-    @GetMapping("/active")
-    public List<ProductDTO> getAllActiveProducts(){
-        return productService.getAllActiveProducts();
-    }
+//    //GET: GET ACTIVE PRODUCTS path --> "/product/active" ROLE[ADMIN, COMPANY]
+//    @GetMapping("/active")
+//    public List<ProductDTO> getAllActiveProducts() {
+//        return productService.getAllActiveProducts();
+//    }
 
     //GET: GET A PRODUCT path --> "/product/{id}" ROLE[ADMIN, COMPANY]
     @Operation(summary = "Get a product by id")
@@ -154,8 +165,8 @@ public class ProductController {
     @JsonView({ProductViews.FullProductResponse.class})
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductDTO getProductById(@PathVariable Long id){
-        return productService.getProductById(id);
+    public ProductDTO getProductById(@Min(1) @PathVariable Long id) {
+        return ProductDTO.of(productService.getProductById(id));
     }
 
     //PUT: EDIT A PRODUCT path --> "/product/{id}" ROLE[ADMIN, COMPANY]
@@ -164,7 +175,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200",
                     description = "Product info updated succesfully",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = CustomerDTO.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
                                             {
@@ -184,7 +195,7 @@ public class ProductController {
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Input body format",
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CustomerDTO.class),
+                    schema = @Schema(implementation = EditProductDTO.class),
                     examples = @ExampleObject(
                             value = """
                                     {
@@ -199,14 +210,13 @@ public class ProductController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductDTO updateAProduct(
-            @PathVariable Long id,
-            @JsonView(ProductViews.ProductUpdate.class)
-            @RequestBody ProductDTO toUpdate){
-        return productService.updateAProduct(toUpdate, id);
+            @Min(1) @PathVariable Long id,
+            @Valid @RequestBody EditProductDTO toUpdate) {
+        return ProductDTO.of(productService.updateAProduct(EditProductDTO.of(toUpdate), id));
     }
 
 
-    //PUT: RETIRE A PRODUCT --> path "/product/{id}" ROLE[ADMIN]
+    //DELETE: RETIRE A PRODUCT --> path "/product/{id}" ROLE[ADMIN]
     @Operation(summary = "Retire a product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
@@ -232,9 +242,9 @@ public class ProductController {
             )
     })
     @JsonView(ProductViews.FullProductResponse.class)
-    @PatchMapping("/{id}/retire")
-    @ResponseStatus(HttpStatus.OK)
-    public ProductDTO retireAProduct(@PathVariable Long id){
-        return productService.retireAProduct(id);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void retireAProduct(@Min(1) @PathVariable Long id) {
+        productService.retireAProduct(id);
     }
 }

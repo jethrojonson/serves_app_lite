@@ -8,5 +8,4 @@ public interface ProductViews {
 
     public class FullProductResponse extends ProductResponse{}
 
-    public class ProductUpdate{}
 }

@@ -1,6 +1,7 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.product.service;
 
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.ProductDTO;
+import com.salesianos.triana.dam.servesapplitebackend.entity.product.exception.ProductExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,41 +17,36 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductDTO addNewProduct(ProductDTO newProduct){
-        Product added = productRepository.save(ProductDTO.of(newProduct));
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(added.getId()).toUri();
-
-        ProductDTO addedRes = ProductDTO.of(added);
-        addedRes.setUri(uri);
-        return addedRes;
+    public Product addNewProduct(Product newProduct){
+       return productRepository.save(newProduct);
     }
+
+//    public List<ProductDTO> getAllProducts(){
+//        return productRepository.findAll().stream().map(ProductDTO::of).toList();
+//    }
 
     public List<ProductDTO> getAllProducts(){
-        return productRepository.findAll().stream().map(ProductDTO::of).toList();
-    }
-
-    public List<ProductDTO> getAllActiveProducts(){
+        List<Product> result = productRepository.findAll();
+        if (result.isEmpty())
+            throw new ProductExceptions.EmptyProductListException();
         return productRepository.findAllActive().stream().map(ProductDTO::of).toList();
     }
 
-    public ProductDTO getProductById(Long id) {
-        Product result = productRepository.findById(id).get();
-        return ProductDTO.of(result);
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElseThrow(()->new ProductExceptions.ProductNotFoundException(id));
     }
 
-    public ProductDTO updateAProduct(ProductDTO toUpdate, Long id){
-        Product result = productRepository.findById(id).get();
-        result.setCategory(toUpdate.getCategory());
-        result.setPrice(toUpdate.getPrice());
-        return ProductDTO.of(productRepository.save(result));
+    public Product updateAProduct(Product toUpdate, Long id){
+        return productRepository.findById(id).map(p ->{
+            p.setCategory(toUpdate.getCategory());
+            p.setPrice(toUpdate.getPrice());
+            return productRepository.save(p);
+                }).orElseThrow(()-> new ProductExceptions.ProductNotFoundException());
     }
 
-    public ProductDTO retireAProduct(Long id){
-        Product result = productRepository.findById(id).get();
-        result.setActive(false);
-        return ProductDTO.of(productRepository.save(result));
+    public void retireAProduct(Long id){
+        productRepository.delete(
+                productRepository.findById(id).orElseThrow(()-> new ProductExceptions.ProductNotFoundException())
+        );
     }
 }
