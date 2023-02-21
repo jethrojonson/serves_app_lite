@@ -4,7 +4,13 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.Product
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.exception.ProductExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.repository.ProductRepository;
+import com.salesianos.triana.dam.servesapplitebackend.search.spec.GenericSpecification;
+import com.salesianos.triana.dam.servesapplitebackend.search.spec.GenericSpecificationBuilder;
+import com.salesianos.triana.dam.servesapplitebackend.search.util.SearchCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,6 +30,12 @@ public class ProductService {
 //    public List<ProductDTO> getAllProducts(){
 //        return productRepository.findAll().stream().map(ProductDTO::of).toList();
 //    }
+
+    public Page<Product> search(List<SearchCriteria> params, Pageable pageable){
+        GenericSpecificationBuilder productSpecificationBuilder = new GenericSpecificationBuilder(params, Product.class);
+        Specification<Product> spec = productSpecificationBuilder.build();
+        return productRepository.findAll(spec, pageable);
+    }
 
     public List<Product> getAllProducts(){
         List<Product> result = productRepository.findAll();
