@@ -42,7 +42,13 @@ public class Company extends User<Company> {
     @OneToMany
     @JoinTable(
             name = "Menu",
-            inverseJoinColumns = @JoinColumn(name = "product_id")
+            joinColumns = @JoinColumn(
+                    foreignKey = @ForeignKey(name = "FK_MENU_COMPANY")
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "product_id",
+                    foreignKey = @ForeignKey(name = "FK_MENU_PRODUCT")
+            )
     )
     @Builder.Default
     private List<Product> menu = new ArrayList<>();
