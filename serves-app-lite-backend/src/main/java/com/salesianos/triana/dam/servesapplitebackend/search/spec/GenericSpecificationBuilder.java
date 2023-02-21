@@ -3,11 +3,13 @@ package com.salesianos.triana.dam.servesapplitebackend.search.spec;
 import com.salesianos.triana.dam.servesapplitebackend.search.util.QueryableEntity;
 import com.salesianos.triana.dam.servesapplitebackend.search.util.SearchCriteria;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
 @AllArgsConstructor
+@Builder
 public class GenericSpecificationBuilder <T>{
 
     private List<SearchCriteria> params;

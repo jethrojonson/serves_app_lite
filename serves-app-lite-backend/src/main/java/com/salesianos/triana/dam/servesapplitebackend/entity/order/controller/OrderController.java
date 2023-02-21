@@ -22,15 +22,5 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    //POST: CREATE ORDER path --> "/order/"
-    //*CHANGE INPUT CUSTOMER --> AUTHENTICATION (PRINCIPAL)
-    @PostMapping("/")
-    public ResponseEntity<OrderDTO> createNewOrder(@RequestBody OrderDTO newOrder){
-        Order created = orderService.createNewOrder(OrderDTO.of(newOrder));
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uri).body(OrderDTO.of(created));
-    }
+
 }

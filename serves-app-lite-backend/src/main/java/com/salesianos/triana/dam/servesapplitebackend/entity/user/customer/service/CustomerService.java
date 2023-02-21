@@ -4,6 +4,7 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.dto.C
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.model.Customer;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerService {
 
+    private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
+
+
 
     public CustomerDTO addNewCustomer(CustomerDTO newCustomer){
         return CustomerDTO.of(customerRepository.save(CustomerDTO.of(newCustomer)));

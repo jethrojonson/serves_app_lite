@@ -6,6 +6,7 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.Product
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.service.ProductService;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.view.ProductViews;
+import com.salesianos.triana.dam.servesapplitebackend.search.util.PageDTO;
 import com.salesianos.triana.dam.servesapplitebackend.validation.annotation.LongID;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -16,8 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -87,35 +92,35 @@ public class ProductController {
         return ResponseEntity.created(uri).body(ProductDTO.of(added));
     }
 
-    //GET: GET ALL PRODUCTS path --> "/product/ ROLE[ADMIN, COMPANY]
-    @Operation(summary = "Get all products")
+    //GET: GET ALL ACTIVE PRODUCTS path --> "/product/? ROLE[CUSTOMER, COMPANY]
+    @Operation(summary = "Get all active products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Products found",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = PageDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
-                                            [
-                                                {
-                                                    "id": 1,
-                                                    "productName": "Estrella Galicia",
-                                                    "category": "Cerveza",
-                                                    "price": 2.0
-                                                },
-                                                {
-                                                    "id": 2,
-                                                    "productName": "Completa",
-                                                    "category": "Tostada",
-                                                    "price": 2.5
-                                                },
-                                                {
-                                                    "id": 3,
-                                                    "productName": "Café con leche",
-                                                    "category": "Café",
-                                                    "price": 1.4
-                                                }
-                                            ]
+                                            {
+                                                 "resultPerPage": 25,
+                                                 "results": [
+                                                     {
+                                                         "id": 1,
+                                                         "productName": "Red Bull",
+                                                         "category": "Refresco",
+                                                         "price": 1.75
+                                                     },
+                                                     {
+                                                         "id": 2,
+                                                         "productName": "Caña",
+                                                         "category": "Cerveza",
+                                                         "price": 1.4
+                                                     }
+                                                 ],
+                                                 "totalResults": 2,
+                                                 "page": 0,
+                                                 "totalPages": 1
+                                            }
                                             """
                             )}
                     )
@@ -128,15 +133,12 @@ public class ProductController {
     @JsonView(ProductViews.ProductResponse.class)
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductDTO> getAllProducts() {
-        return productService.getAllProducts().stream().map(ProductDTO::of).toList();
+    public PageDTO<ProductDTO> getAllActiveProducts(
+            @RequestParam(value = "s", defaultValue = "") String s,
+            @PageableDefault(size = 25, page = 0) Pageable pageable
+            ) {
+        return PageDTO.of(productService.searchActive(s,pageable).map(ProductDTO::of));
     }
-
-//    //GET: GET ACTIVE PRODUCTS path --> "/product/active" ROLE[ADMIN, COMPANY]
-//    @GetMapping("/active")
-//    public List<ProductDTO> getAllActiveProducts() {
-//        return productService.getAllActiveProducts();
-//    }
 
     //GET: GET A PRODUCT path --> "/product/{id}" ROLE[ADMIN, COMPANY]
     @Operation(summary = "Get a product by id")

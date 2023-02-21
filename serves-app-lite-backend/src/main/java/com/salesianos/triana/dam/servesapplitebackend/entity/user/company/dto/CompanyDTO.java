@@ -32,6 +32,12 @@ public class CompanyDTO {
     @JsonView({CompanyViews.NewCompany.class})
     private String username;
 
+    @JsonView({CompanyViews.NewCompany.class})
+    private String password;
+
+    @JsonView({CompanyViews.NewCompany.class})
+    private String verifyPassword;
+
     @JsonView({CompanyViews.CompanyResponse.class})
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private LocalDateTime subscribedAt;

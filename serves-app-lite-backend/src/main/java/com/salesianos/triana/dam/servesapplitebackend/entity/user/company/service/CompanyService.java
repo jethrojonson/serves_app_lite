@@ -1,22 +1,39 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.service;
 
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.roles.UserRole;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.dto.CompanyDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model.Company;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
 
+    private PasswordEncoder passwordEncoder;
     private final CompanyRepository companyRepository;
 
-    public CompanyDTO addNewCompany(CompanyDTO newCompany){
-        return CompanyDTO.of(companyRepository.save(CompanyDTO.of(newCompany)));
+    public Company createNewCompany(Company newCompany){
+        Company company = Company.builder()
+                .cif(newCompany.getCif())
+                .companyName(newCompany.getCompanyName())
+                .username(newCompany.getUsername())
+                .password(newCompany.getPassword())
+                .avatar(newCompany.getAvatar())
+                .roles(Set.of(UserRole.COMPANY))
+                .build();
+        return companyRepository.save(company);
+    }
+
+    public Optional<Company> findByUsername(String username){
+        return companyRepository.findFirstByUsername(username);
     }
 
     public List<CompanyDTO> getAllCompanies(){

@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,50 +29,56 @@ public class CompanyController {
     private final CompanyService companyService;
 
     //POST: NEW COMPANY path --> "/company/"
-    @Operation(summary = "Add new company")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201",
-                    description = "New company added succesfully",
-                    content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = CompanyDTO.class)),
-                            examples = {@ExampleObject(
-                                    value = """
-                                            {
-                                                "id" : "45c6f247-ce6b-413f-ab84-cd8373990c59",
-                                                "cif" : "A-12345678",
-                                                "companyName" : "Malafama Clandestine Bar",
-                                                "username" : "Malfama2000"
-                                            }
-                                            """
-                            )}
-                    )
-            ),
-            @ApiResponse(responseCode = "400",
-                    description = "Incorrect input format",
-                    content = @Content
-            )
-    })
-   @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Input body format",
-            content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = CompanyDTO.class),
-                    examples = @ExampleObject(
-                            value = """
-                                    {
-                                        "cif" : "A-12345678",
-                                        "companyName" : "Malafama Clandestine Bar",
-                                        "username" : "Malfama2000"
-                                    }
-                                    """
-                    )
-            )
-    )
-    @JsonView(CompanyViews.CompanyResponse.class)
-    @PostMapping("/")
+//    @Operation(summary = "Add new company")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "201",
+//                    description = "New company added succesfully",
+//                    content = @Content(mediaType = "application/json",
+//                            array = @ArraySchema(schema = @Schema(implementation = CompanyDTO.class)),
+//                            examples = {@ExampleObject(
+//                                    value = """
+//                                            {
+//                                                "id" : "45c6f247-ce6b-413f-ab84-cd8373990c59",
+//                                                "cif" : "A-12345678",
+//                                                "companyName" : "Malafama Clandestine Bar",
+//                                                "username" : "Malfama2000"
+//                                            }
+//                                            """
+//                            )}
+//                    )
+//            ),
+//            @ApiResponse(responseCode = "400",
+//                    description = "Incorrect input format",
+//                    content = @Content
+//            )
+//    })
+//   @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Input body format",
+//            content = @Content(mediaType = "application/json",
+//                    schema = @Schema(implementation = CompanyDTO.class),
+//                    examples = @ExampleObject(
+//                            value = """
+//                                    {
+//                                        "cif" : "A-12345678",
+//                                        "companyName" : "Malafama Clandestine Bar",
+//                                        "username" : "Malfama2000"
+//                                    }
+//                                    """
+//                    )
+//            )
+//    )
+//    @JsonView(CompanyViews.CompanyResponse.class)
+//    @PostMapping("/")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CompanyDTO registerNewCompany (
+//            @JsonView(CompanyViews.NewCompany.class)
+//            @RequestBody CompanyDTO newCompany){
+//        return companyService.addNewCompany(newCompany);
+//    }
+
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompanyDTO registerNewCompany (
-            @JsonView(CompanyViews.NewCompany.class)
-            @RequestBody CompanyDTO newCompany){
-        return companyService.addNewCompany(newCompany);
+    public CompanyDTO registerNewCompany(@RequestBody CompanyDTO newCompany){
+        return CompanyDTO.of(companyService.createNewCompany(CompanyDTO.of(newCompany)));
     }
 
     //GET: GET ALL COMPANIES path --> "/company/"

@@ -7,6 +7,7 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.product.repository.
 import com.salesianos.triana.dam.servesapplitebackend.search.spec.GenericSpecification;
 import com.salesianos.triana.dam.servesapplitebackend.search.spec.GenericSpecificationBuilder;
 import com.salesianos.triana.dam.servesapplitebackend.search.util.SearchCriteria;
+import com.salesianos.triana.dam.servesapplitebackend.search.util.SearchCriteriaExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,19 +28,16 @@ public class ProductService {
        return productRepository.save(newProduct);
     }
 
-//    public List<ProductDTO> getAllProducts(){
-//        return productRepository.findAll().stream().map(ProductDTO::of).toList();
-//    }
-
-    public Page<Product> search(List<SearchCriteria> params, Pageable pageable){
-        GenericSpecificationBuilder productSpecificationBuilder = new GenericSpecificationBuilder(params, Product.class);
+    public Page<Product> searchActive(String searchCriteria, Pageable pageable){
+        List<SearchCriteria> params = SearchCriteriaExtractor.extractSearchCriteriaList(searchCriteria);
+        GenericSpecificationBuilder productSpecificationBuilder =
+                GenericSpecificationBuilder.builder()
+                        .params(params)
+                        .type(Product.class)
+                        .build();
         Specification<Product> spec = productSpecificationBuilder.build();
-        return productRepository.findAll(spec, pageable);
-    }
-
-    public List<Product> getAllProducts(){
-        List<Product> result = productRepository.findAll();
-        if (result.isEmpty())
+        Page<Product> result = productRepository.findAll(spec, pageable);
+        if(result.isEmpty())
             throw new ProductExceptions.EmptyProductListException();
         return result;
     }

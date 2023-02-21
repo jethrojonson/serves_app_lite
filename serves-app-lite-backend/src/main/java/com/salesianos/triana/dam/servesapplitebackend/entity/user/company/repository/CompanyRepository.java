@@ -10,6 +10,8 @@ import java.util.UUID;
 
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
+    Optional<Company> findFirstByUsername(String username);
+
     @EntityGraph(value = "company-menu")
     List<Company> findAll();
 

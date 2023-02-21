@@ -26,6 +26,12 @@ public class CustomerDTO {
     @JsonView({CustomerViews.NewCustomer.class})
     private String username;
 
+    @JsonView({CustomerViews.NewCustomer.class})
+    private String password;
+
+    @JsonView({CustomerViews.NewCustomer.class})
+    private String verifyPassword;
+
     @JsonView({CustomerViews.NewCustomer.class, CustomerViews.CustomerUpdate.class})
     private String name;
 

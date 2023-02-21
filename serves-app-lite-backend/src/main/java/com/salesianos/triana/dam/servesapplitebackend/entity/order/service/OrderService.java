@@ -16,7 +16,5 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public Order createNewOrder(Order newOrder){
-        return orderRepository.save(newOrder);
-    }
+
 }

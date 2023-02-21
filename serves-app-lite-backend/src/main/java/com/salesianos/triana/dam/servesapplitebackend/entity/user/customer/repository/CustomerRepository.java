@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
+    Optional<Customer> findFirstByUsername(String Username);
 
     @EntityGraph(value = "customer-orders")
     List<Customer> findAll();
