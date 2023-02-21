@@ -28,80 +28,80 @@ public class TestModel {
     @PostConstruct
     public void run(){
 
-        //PRODUCTS
-
-        Product product1 = Product.builder()
-                .productName("Estrella Galicia")
-                .category("Cerveza")
-                .price(2.00)
-                .build();
-
-        Product product2 = Product.builder()
-                .productName("Completa")
-                .category("Tostada")
-                .price(2.50)
-                .build();
-
-        Product product3 = Product.builder()
-                .productName("Café con leche")
-                .category("Café")
-                .price(1.40)
-                .build();
-
-        productRepository.saveAll(List.of(product1, product2, product3));
-
-        //COMPANIES
-
-        Company company1 = Company.builder()
-                .username("chileno69")
-                .cif("A-12345678")
-                .companyName("Café D&N")
-                .menu(List.of(product1, product2, product3))
-                .build();
-
-        companyRepository.saveAll(List.of(company1));
-
-        //CUSTOMERS
-
-        Customer customer1 = Customer.builder()
-                .username("jethro_93")
-                .name("Jerónimo M.")
-                .surname("Pérez González")
-                .email("perez.gojer22@triana.salesianos.edu")
-                .build();
-
-        customerRepository.saveAll(List.of(customer1));
-
-        //ORDERS - SALES LINES
-
-        //1º ORDER
-
-        Order order1 = Order.builder().build();
-
-        orderRepository.saveAll(List.of(order1));
-
-        order1.addToCustomer(customer1);
-        order1.addToCompany(company1);
-
-        orderRepository.saveAll(List.of(order1));
-
-        Line line1 = Line.builder()
-                .id(
-                        LinePK.builder()
-                                .order_id(order1.getId())
-                                .product_id(product1.getId())
-                                .build()
-                )
-                .order(order1)
-                .product(product1)
-                .quantity(5)
-                .subTotal(product1.getPrice()*5)
-                .build();
-
-        line1.addToOrder(order1);
-
-        orderRepository.saveAll(List.of(order1));
-
+//        //PRODUCTS
+//
+//        Product product1 = Product.builder()
+//                .productName("Estrella Galicia")
+//                .category("Cerveza")
+//                .price(2.00)
+//                .build();
+//
+//        Product product2 = Product.builder()
+//                .productName("Completa")
+//                .category("Tostada")
+//                .price(2.50)
+//                .build();
+//
+//        Product product3 = Product.builder()
+//                .productName("Café con leche")
+//                .category("Café")
+//                .price(1.40)
+//                .build();
+//
+//        productRepository.saveAll(List.of(product1, product2, product3));
+//
+//        //COMPANIES
+//
+//        Company company1 = Company.builder()
+//                .username("chileno69")
+//                .cif("A-12345678")
+//                .companyName("Café D&N")
+//                .menu(List.of(product1, product2, product3))
+//                .build();
+//
+//        companyRepository.saveAll(List.of(company1));
+//
+//        //CUSTOMERS
+//
+//        Customer customer1 = Customer.builder()
+//                .username("jethro_93")
+//                .name("Jerónimo M.")
+//                .surname("Pérez González")
+//                .email("perez.gojer22@triana.salesianos.edu")
+//                .build();
+//
+//        customerRepository.saveAll(List.of(customer1));
+//
+//        //ORDERS - SALES LINES
+//
+//        //1º ORDER
+//
+//        Order order1 = Order.builder().build();
+//
+//        orderRepository.saveAll(List.of(order1));
+//
+//        order1.addToCustomer(customer1);
+//        order1.addToCompany(company1);
+//
+//        orderRepository.saveAll(List.of(order1));
+//
+//        Line line1 = Line.builder()
+//                .id(
+//                        LinePK.builder()
+//                                .order_id(order1.getId())
+//                                .product_id(product1.getId())
+//                                .build()
+//                )
+//                .order(order1)
+//                .product(product1)
+//                .quantity(5)
+//                .subTotal(product1.getPrice()*5)
+//                .build();
+//
+//        line1.addToOrder(order1);
+//
+//        orderRepository.saveAll(List.of(order1));
+//
 
 
 

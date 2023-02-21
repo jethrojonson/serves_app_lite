@@ -33,7 +33,8 @@ public class ProductDTO {
     private double price;
 
     @JsonView({ProductViews.FullProductResponse.class})
-    private boolean active;
+    @Builder.Default
+    private boolean active = true;
 
     public static ProductDTO of (Product p){
         return ProductDTO.builder()
@@ -54,4 +55,5 @@ public class ProductDTO {
                 .active(p.isActive())
                 .build();
     }
+
 }

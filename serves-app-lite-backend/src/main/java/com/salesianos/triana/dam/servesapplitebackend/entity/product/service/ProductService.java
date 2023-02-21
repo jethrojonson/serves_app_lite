@@ -25,11 +25,11 @@ public class ProductService {
 //        return productRepository.findAll().stream().map(ProductDTO::of).toList();
 //    }
 
-    public List<ProductDTO> getAllProducts(){
+    public List<Product> getAllProducts(){
         List<Product> result = productRepository.findAll();
         if (result.isEmpty())
             throw new ProductExceptions.EmptyProductListException();
-        return productRepository.findAllActive().stream().map(ProductDTO::of).toList();
+        return result;
     }
 
     public Product getProductById(Long id) {
@@ -41,12 +41,12 @@ public class ProductService {
             p.setCategory(toUpdate.getCategory());
             p.setPrice(toUpdate.getPrice());
             return productRepository.save(p);
-                }).orElseThrow(()-> new ProductExceptions.ProductNotFoundException());
+                }).orElseThrow(ProductExceptions.ProductNotFoundException::new);
     }
 
     public void retireAProduct(Long id){
         productRepository.delete(
-                productRepository.findById(id).orElseThrow(()-> new ProductExceptions.ProductNotFoundException())
+                productRepository.findById(id).orElseThrow(ProductExceptions.ProductNotFoundException::new)
         );
     }
 }

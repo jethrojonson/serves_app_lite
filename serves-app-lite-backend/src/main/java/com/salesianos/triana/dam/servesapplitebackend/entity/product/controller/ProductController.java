@@ -77,8 +77,8 @@ public class ProductController {
     @JsonView(ProductViews.ProductResponse.class)
     @PostMapping("/")
     public ResponseEntity<ProductDTO> addNewProduct(
-            @JsonView(ProductViews.NewProduct.class)
-            @Valid @RequestBody ProductDTO newProduct) {
+
+            @Valid @RequestBody @JsonView(ProductViews.NewProduct.class) ProductDTO newProduct) {
         Product added = productService.addNewProduct(ProductDTO.of(newProduct));
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -128,7 +128,7 @@ public class ProductController {
     @JsonView(ProductViews.ProductResponse.class)
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts().stream().map(ProductDTO::of).toList();
     }
 
