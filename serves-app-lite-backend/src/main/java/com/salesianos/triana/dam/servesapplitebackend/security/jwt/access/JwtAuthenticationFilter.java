@@ -38,42 +38,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+    protected void doFilterInternal(
+            HttpServletRequest request, HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
         String token = getJwtTokenFromRequest(request);
-
         try {
             if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
                 UUID userId = jwtProvider.getUserIdFromJwtToken(token);
-
                 Optional<User> result = userService.findById(userId);
-
                 if (result.isPresent()) {
                     User user = result.get();
-
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(
                                     user,
                                     null,
                                     user.getAuthorities()
                             );
-
                     authentication.setDetails(new WebAuthenticationDetails(request));
-
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-
             }
-
             filterChain.doFilter(request, response);
-
         } catch (JwtTokenException ex) {
             log.info("Authentication error using token JWT: " + ex.getMessage());
             resolver.resolveException(request, response, null, ex);
         }
-
-
-
     }
 
     private String getJwtTokenFromRequest(HttpServletRequest request) {

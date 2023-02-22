@@ -4,7 +4,7 @@ public interface CustomerViews {
 
     public class NewCustomer{}
 
-    public class CustomerResponse extends NewCustomer{}
+    public class CustomerResponse{}
 
     public class FullCustomerResponse extends CustomerResponse{}
 

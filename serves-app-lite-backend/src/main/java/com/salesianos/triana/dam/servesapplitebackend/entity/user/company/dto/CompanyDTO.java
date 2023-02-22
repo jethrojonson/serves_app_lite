@@ -10,6 +10,7 @@ import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.view.C
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,29 +47,30 @@ public class CompanyDTO {
     private LocalDateTime subscribedAt;
 
     @JsonView({CompanyViews.FullCompanyResponse.class})
-    private List<ProductDTO> menu;
+    @Builder.Default
+    private List<ProductDTO> menu = new ArrayList<>();
 
 
-//    public static Company of (CompanyDTO c){
-//        return Company.builder()
-//                .id(c.getId())
-//                .cif(c.getCif())
-//                .avatar(c.getAvatar())
-//                .companyName(c.getCompanyName())
-//                .username(c.getUsername())
-//                .password(c.getPassword())
-//                .build();
-//    }
-//
-//    public static CompanyDTO of (Company c){
-//        return CompanyDTO.builder()
-//                .id(c.getId())
-//                .cif(c.getCif())
-//                .avatar(c.getAvatar())
-//                .companyName(c.getCompanyName())
-//                .username(c.getUsername())
-//                .subscribedAt(c.getCreatedAt())
-//                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
-//                .build();
-//    }
+    public static Company of (CompanyDTO c){
+        return Company.builder()
+                .username(c.getUsername())
+                .password(c.getPassword())
+                .avatar(c.getAvatar())
+                .id(c.getId())
+                .cif(c.getCif())
+                .companyName(c.getCompanyName())
+                .build();
+    }
+
+    public static CompanyDTO of (Company c){
+        return CompanyDTO.builder()
+                .id(c.getId())
+                .cif(c.getCif())
+                .avatar(c.getAvatar())
+                .companyName(c.getCompanyName())
+                .username(c.getUsername())
+                .subscribedAt(c.getCreatedAt())
+                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
+                .build();
+    }
 }

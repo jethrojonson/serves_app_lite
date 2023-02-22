@@ -74,7 +74,9 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().antMatchers("/h2-console/**", "/swagger-ui/**", "/auth/register/customer","auth/register/company", "/auth/login", "/refreshtoken"));
+        return (web -> web.ignoring().antMatchers("/h2-console/**", "/swagger-ui/**",
+                "/auth/register/customer","/auth/register/company", "/auth/login",
+                "/refreshtoken"));
     }
 
 }

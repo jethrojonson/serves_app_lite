@@ -15,8 +15,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerService {
 
-    private final PasswordEncoder passwordEncoder;
     private final CustomerRepository customerRepository;
+
+    public Customer addCustomer(Customer customer){
+        return customerRepository.save(customer);
+    }
 
 
 //

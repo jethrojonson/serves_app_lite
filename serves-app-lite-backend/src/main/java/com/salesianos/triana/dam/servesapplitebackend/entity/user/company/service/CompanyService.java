@@ -19,7 +19,10 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-//    private final UserRepository userRepository;
+
+    public Company addCompany(Company company){
+        return companyRepository.save(company);
+    }
 //
 //
 //
