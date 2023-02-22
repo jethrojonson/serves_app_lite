@@ -23,8 +23,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
-public class Customer extends User<Customer> {
+//@Builder
+public class Customer extends User {
 
     private String name;
     private String surname;
@@ -33,7 +33,7 @@ public class Customer extends User<Customer> {
     private String email;
 
     @OneToMany(mappedBy = "customer")
-    @Builder.Default
+//    @Builder.Default
     private List<Order> ordersMade = new ArrayList<>();
 
     @PreRemove

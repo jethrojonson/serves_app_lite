@@ -53,30 +53,30 @@ public class CustomerDTO {
     @Builder.Default
     private List<Order> ordersMade = new ArrayList<>();
 
-    public static CustomerDTO of (Customer c){
-        return CustomerDTO.builder()
-                .id(c.getId())
-                .username(c.getUsername())
-                .name(c.getName())
-                .surname(c.getSurname())
-                .email(c.getEmail())
-                .subscribedAt(c.getCreatedAt())
-                .totalOrders(c.getOrdersMade().size())
-                .ordersMade(c.getOrdersMade())
-                .build();
-    }
-
-    public static Customer of (CustomerDTO c){
-        return Customer.builder()
-                .id(c.getId())
-                .username(c.getUsername())
-                .name(c.getName())
-                .surname(c.getSurname())
-                .email(c.getEmail())
-                .createdAt(c.getSubscribedAt())
-                .ordersMade(c.getOrdersMade())
-                .build();
-    }
+//    public static CustomerDTO of (Customer c){
+//        return CustomerDTO.builder()
+//                .id(c.getId())
+//                .username(c.getUsername())
+//                .name(c.getName())
+//                .surname(c.getSurname())
+//                .email(c.getEmail())
+//                .subscribedAt(c.getCreatedAt())
+//                .totalOrders(c.getOrdersMade().size())
+//                .ordersMade(c.getOrdersMade())
+//                .build();
+//    }
+//
+//    public static Customer of (CustomerDTO c){
+//        return Customer.builder()
+//                .id(c.getId())
+//                .username(c.getUsername())
+//                .name(c.getName())
+//                .surname(c.getSurname())
+//                .email(c.getEmail())
+//                .createdAt(c.getSubscribedAt())
+//                .ordersMade(c.getOrdersMade())
+//                .build();
+//    }
 
 
 

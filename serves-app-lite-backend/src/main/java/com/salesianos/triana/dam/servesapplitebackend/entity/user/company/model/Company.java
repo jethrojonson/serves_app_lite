@@ -24,8 +24,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
-public class Company extends User<Company> {
+//@Builder
+public class Company extends User {
 
     /*Este CIF se compone de una letra más ocho dígitos,
       que suman 9 cifras alfanuméricas: El primer dígito
@@ -50,11 +50,11 @@ public class Company extends User<Company> {
                     foreignKey = @ForeignKey(name = "FK_MENU_PRODUCT")
             )
     )
-    @Builder.Default
+//    @Builder.Default
     private List<Product> menu = new ArrayList<>();
 
     @OneToMany(mappedBy = "company")
-    @Builder.Default
+//    @Builder.Default
     private List<Order> ordersReceived = new ArrayList<>();
 
     @PreRemove

@@ -1,4 +1,4 @@
-package com.salesianos.triana.dam.servesapplitebackend.configuration;
+package com.salesianos.triana.dam.servesapplitebackend.validation;
 
 import lombok.Builder;
 import org.springframework.context.MessageSource;

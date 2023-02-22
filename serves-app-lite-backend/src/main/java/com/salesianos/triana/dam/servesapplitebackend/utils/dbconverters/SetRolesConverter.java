@@ -1,6 +1,6 @@
 package com.salesianos.triana.dam.servesapplitebackend.utils.dbconverters;
 
-import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.roles.UserRole;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.roles.UserRole;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -1,6 +1,6 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model;
 
-import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.roles.UserRole;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.roles.UserRole;
 import com.salesianos.triana.dam.servesapplitebackend.utils.dbconverters.SetRolesConverter;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -20,14 +20,15 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
-public abstract class User <T extends User<T>> implements UserDetails {
+@Builder
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -48,11 +49,14 @@ public abstract class User <T extends User<T>> implements UserDetails {
     @Column(unique = true, updatable = false)
     private String username;
 
-    private String password;
+
+    private String password ;
+
+
     private String avatar;
 
     @Builder.Default
-    private LocalDateTime lastPasswordChange = LocalDateTime.now();
+    private LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -68,7 +72,15 @@ public abstract class User <T extends User<T>> implements UserDetails {
                 .toList();
     }
 
-    //OVERRIDE GET PASSWORD AND USERNAME?
+    @Override
+    public String getPassword(){
+        return password;
+    }
+
+    @Override
+    public String getUsername(){
+        return username;
+    }
 
     @Builder.Default
     private boolean accountNonExpired = true;
@@ -78,11 +90,6 @@ public abstract class User <T extends User<T>> implements UserDetails {
     private boolean credentialsNonExpired = true;
     @Builder.Default
     private boolean enabled = true;
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
 
     @Override
     public boolean isAccountNonExpired() {

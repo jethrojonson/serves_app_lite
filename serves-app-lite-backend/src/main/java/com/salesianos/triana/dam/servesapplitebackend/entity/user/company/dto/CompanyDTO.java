@@ -23,14 +23,17 @@ public class CompanyDTO {
     @JsonView({CompanyViews.CompanyResponse.class})
     private UUID id;
 
-    @JsonView({CompanyViews.NewCompany.class})
+    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class})
     private String cif;
 
-    @JsonView({CompanyViews.NewCompany.class, CompanyViews.CompanyUpdate.class})
+    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class, CompanyViews.CompanyUpdate.class})
     private String companyName;
 
-    @JsonView({CompanyViews.NewCompany.class})
+    @JsonView({CompanyViews.NewCompany.class, CompanyViews.CompanyResponse.class})
     private String username;
+
+    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class})
+    private String avatar;
 
     @JsonView({CompanyViews.NewCompany.class})
     private String password;
@@ -46,22 +49,26 @@ public class CompanyDTO {
     private List<ProductDTO> menu;
 
 
-    public static Company of (CompanyDTO c){
-        return Company.builder()
-                .cif(c.getCif())
-                .companyName(c.getCompanyName())
-                .username(c.getUsername())
-                .build();
-    }
-
-    public static CompanyDTO of (Company c){
-        return CompanyDTO.builder()
-                .id(c.getId())
-                .cif(c.getCif())
-                .companyName(c.getCompanyName())
-                .username(c.getUsername())
-                .subscribedAt(c.getCreatedAt())
-                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
-                .build();
-    }
+//    public static Company of (CompanyDTO c){
+//        return Company.builder()
+//                .id(c.getId())
+//                .cif(c.getCif())
+//                .avatar(c.getAvatar())
+//                .companyName(c.getCompanyName())
+//                .username(c.getUsername())
+//                .password(c.getPassword())
+//                .build();
+//    }
+//
+//    public static CompanyDTO of (Company c){
+//        return CompanyDTO.builder()
+//                .id(c.getId())
+//                .cif(c.getCif())
+//                .avatar(c.getAvatar())
+//                .companyName(c.getCompanyName())
+//                .username(c.getUsername())
+//                .subscribedAt(c.getCreatedAt())
+//                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
+//                .build();
+//    }
 }

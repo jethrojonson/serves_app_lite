@@ -10,6 +10,7 @@ public class PasswordEncoderConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return PasswordEncoderFactories
+                .createDelegatingPasswordEncoder();
     }
 }
