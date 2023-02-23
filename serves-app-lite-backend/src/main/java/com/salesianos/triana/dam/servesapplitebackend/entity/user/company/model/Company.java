@@ -1,5 +1,6 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model;
 
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.model.Item;
 import com.salesianos.triana.dam.servesapplitebackend.entity.order.model.Order;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.User;
@@ -60,6 +61,10 @@ public class Company extends User {
     )
     @Builder.Default
     private List<Product> menu = new ArrayList<>();
+
+    @OneToMany(mappedBy = "company")
+    @Builder.Default
+    private List<Item> menuItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "company")
     @Builder.Default

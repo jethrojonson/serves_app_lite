@@ -15,9 +15,7 @@ import java.io.Serializable;
 @Builder
 public class LinePK implements Serializable {
 
-    @JsonView(OrderViews.OrderResponse.class)
     private Long order_id;
-    @JsonView(OrderViews.OrderResponse.class)
     private Long product_id;
 
 }
