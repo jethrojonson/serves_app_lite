@@ -1,7 +1,9 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.line.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianos.triana.dam.servesapplitebackend.entity.line.model.pk.LinePK;
 import com.salesianos.triana.dam.servesapplitebackend.entity.order.model.Order;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.view.OrderViews;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import lombok.*;
 

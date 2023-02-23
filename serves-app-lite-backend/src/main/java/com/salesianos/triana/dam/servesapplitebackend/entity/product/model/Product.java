@@ -1,5 +1,7 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.product.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.view.OrderViews;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

@@ -1,6 +1,8 @@
 package com.salesianos.triana.dam.servesapplitebackend.error;
 
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.exception.ProductExceptions;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.exception.CompanyExceptions;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.exception.CustomerExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.error.model.ApiError;
 import com.salesianos.triana.dam.servesapplitebackend.error.model.impl.ApiErrorImpl;
 import com.salesianos.triana.dam.servesapplitebackend.error.model.impl.ApiValidationSubError;
@@ -37,9 +39,19 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
     //* COMPANY EXCEPTIONS *//
     //**********************//
 
+    @ExceptionHandler({CompanyExceptions.CompanyNotFoundException.class})
+    public ResponseEntity<?> handleCompanyNotFoundException (EntityNotFoundException ex, WebRequest request){
+        return buildApiError(ex.getMessage(), request, HttpStatus.NOT_FOUND);
+    }
+
     //***********************//
     //* CUSTOMER EXCEPTIONS *//
     //***********************//
+
+    @ExceptionHandler({CustomerExceptions.CustomerNotFoundException.class})
+    public ResponseEntity<?> handleCustomerNotFoundException (EntityNotFoundException ex, WebRequest request){
+        return buildApiError(ex.getMessage(), request, HttpStatus.NOT_FOUND);
+    }
 
     private final ResponseEntity<Object> buildApiError(String message, WebRequest request, HttpStatus status) {
         return ResponseEntity

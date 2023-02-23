@@ -3,6 +3,7 @@ package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.view.OrderViews;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.ProductDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model.Company;
@@ -70,7 +71,7 @@ public class CompanyDTO {
                 .companyName(c.getCompanyName())
                 .username(c.getUsername())
                 .subscribedAt(c.getCreatedAt())
-                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
+//                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
                 .build();
     }
 }

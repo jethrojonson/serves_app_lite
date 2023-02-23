@@ -18,6 +18,14 @@ import java.util.List;
                 )
         }
 )
+@NamedEntityGraph(
+        name = "company-orders",
+        attributeNodes = {
+                @NamedAttributeNode(
+                        value = "ordersReceived"
+                )
+        }
+)
 @Entity
 @Table(name = "companies")
 @AllArgsConstructor

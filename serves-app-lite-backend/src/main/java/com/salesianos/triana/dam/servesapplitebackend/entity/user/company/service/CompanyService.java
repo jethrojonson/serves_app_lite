@@ -23,6 +23,10 @@ public class CompanyService {
     public Company addCompany(Company company){
         return companyRepository.save(company);
     }
+
+    public Optional<Company> findByCompanyName(String companyName){
+        return companyRepository.findFirstByCompanyName(companyName);
+    }
 //
 //
 //

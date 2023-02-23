@@ -1,6 +1,10 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.line.model.Line;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.dto.OrderDTO;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.view.OrderViews;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.User;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.dto.CustomerDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.service.CustomerService;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.view.CustomerViews;
@@ -14,8 +18,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +34,22 @@ import java.util.UUID;
 public class CustomerController {
 
     private final CustomerService customerService;
+
+//    @JsonView(OrderViews.OrderResponse.class)
+//    @PostMapping("/order/{company_name}")
+//    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO newOrder, @PathVariable String company_name,
+//                                      @AuthenticationPrincipal User loggedUser){
+//        OrderDTO orderMade = OrderDTO.of(
+//                customerService.createNewOrder(OrderDTO.of(newOrder), loggedUser, company_name));
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(orderMade.getId())
+//                .toUri();
+//        return ResponseEntity.created(uri).body(orderMade);
+//    }
+
+
 
 //    //POST: ADD CUSTOMER path --> "/customer/"
 //    @Operation(summary = "Add new customer")

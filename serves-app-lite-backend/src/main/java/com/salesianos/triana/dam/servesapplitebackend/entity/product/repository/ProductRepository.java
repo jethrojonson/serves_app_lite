@@ -16,11 +16,11 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 //            """)
 //    List<Product> findAllActive();
 
-//    @Query("""
-//            SELECT p
-//            FROM Product p
-//            WHERE p.active = true
-//            AND p.active = false
-//            """)
-//    List<Product> findAllWithInactive();
+    @Query("""
+            SELECT p
+            FROM Product p
+            WHERE p.active = true
+            AND p.active = false
+            """)
+    List<Product> findAllWithInactive();
 }

@@ -3,11 +3,9 @@ package com.salesianos.triana.dam.servesapplitebackend.entity.user.base.service;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.User;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.roles.UserRole;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.repository.UserRepository;
-import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.dto.CompanyDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model.Company;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.service.CompanyService;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.model.Customer;
-import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.repository.CustomerRepository;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,7 +65,7 @@ public class UserService {
                         .avatar(newCompany.getAvatar())
                         .roles(Set.of(UserRole.COMPANY))
                         .cif(newCompany.getCif())
-                        .companyName(newCompany.getCompanyName())
+                        .companyName(newCompany.getCompanyName().replace(" ","_"))
                         .build()
         );
     }

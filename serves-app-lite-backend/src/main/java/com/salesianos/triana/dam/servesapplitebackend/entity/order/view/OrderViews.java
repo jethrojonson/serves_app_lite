@@ -2,5 +2,6 @@ package com.salesianos.triana.dam.servesapplitebackend.entity.order.view;
 
 public interface OrderViews {
 
-    public class NewOrder{}
+    public class OrderResponse{}
+
 }

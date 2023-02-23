@@ -64,7 +64,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/note/**").hasRole("USER")
+                .antMatchers("/product/").hasAnyRole("ADMIN", "COMPANY")
+                .antMatchers("/order/{companyName}").hasRole("CUSTOMER")
                 .antMatchers("/auth/register/admin").hasRole("ADMIN")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -74,7 +75,8 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().antMatchers("/h2-console/**", "/swagger-ui/**",
+        return (web -> web.ignoring().antMatchers(
+                "/h2-console/**", "/swagger-ui/**",
                 "/auth/register/customer","/auth/register/company", "/auth/login",
                 "/refreshtoken"));
     }

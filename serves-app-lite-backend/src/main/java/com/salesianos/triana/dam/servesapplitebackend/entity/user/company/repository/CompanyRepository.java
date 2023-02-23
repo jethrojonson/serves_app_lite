@@ -12,7 +12,9 @@ public interface CompanyRepository extends JpaRepository<Company, UUID> {
 
     Optional<Company> findFirstByUsername(String username);
 
-    @EntityGraph(value = "company-menu")
+    Optional<Company> findFirstByCompanyName(String companyName);
+
+    @EntityGraph(value = "company-menu", type = EntityGraph.EntityGraphType.LOAD)
     List<Company> findAll();
 
     @EntityGraph(value = "company-menu", type = EntityGraph.EntityGraphType.LOAD)
