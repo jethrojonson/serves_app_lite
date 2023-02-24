@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/company/menu/{company_id}").hasAnyRole("CUSTOMER", "COMPANY", "ADMIN")
-                .antMatchers("/company/menu/{item_id}").hasRole("COMPANY")
+                .antMatchers(HttpMethod.DELETE,  "/company/menu/{item_id}").hasRole("COMPANY")
                 .antMatchers("/company/{company_id}").hasRole("ADMIN")
                 .antMatchers("/company/").hasAnyRole("CUSTOMER", "COMPANY", "ADMIN")
                 .antMatchers("/company/menu/{product_id}").hasRole("COMPANY")
@@ -81,7 +81,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web -> web.ignoring().antMatchers(
-                "/h2-console/**", "/swagger-ui/**",
+                "/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**",
                 "/auth/register/customer","/auth/register/company", "/auth/login",
                 "/refreshtoken"));
     }

@@ -65,6 +65,10 @@ public class CompanyService {
     public void deleteItemFromMenu(Company company, Long item_id){
         company = companyRepository.findById(company.getId())
                 .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
+        Item item = companyRepository.findItemById(item_id)
+                .orElseThrow(()->new ItemExceptions.ItemNotFoundException(item_id));
+        if(company.getMenuItems().contains(item))
+
         company.getMenuItems().remove(companyRepository.findItemById(item_id)
                 .orElseThrow(()->new ItemExceptions.ItemNotFoundException(item_id)));
         companyRepository.save(company);

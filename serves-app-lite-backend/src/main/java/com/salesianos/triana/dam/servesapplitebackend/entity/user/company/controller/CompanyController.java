@@ -77,7 +77,7 @@ public class CompanyController {
         return PageDTO.of(companyService.searchAll(s,pageable).map(CompanyDTO::of));
     }
 
-    @PutMapping("/menu/{item_id}")
+    @DeleteMapping("/menu/{item_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteItemFromMenu(@PathVariable Long item_id,
                                    @AuthenticationPrincipal Company loggedCompany){

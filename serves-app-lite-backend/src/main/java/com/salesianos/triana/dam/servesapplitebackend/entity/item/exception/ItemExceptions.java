@@ -8,6 +8,8 @@ public interface ItemExceptions {
         public ItemNotFoundException(Long id){
             super(String.format("Could not found item with ID: %x",id));
         }
+
+//        public ItemNotInMenuException()
     }
 
 }
