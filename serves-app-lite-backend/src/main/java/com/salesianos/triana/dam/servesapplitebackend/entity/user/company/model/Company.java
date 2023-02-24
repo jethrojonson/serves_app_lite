@@ -15,7 +15,7 @@ import java.util.List;
         name = "company-menu",
         attributeNodes = {
                 @NamedAttributeNode(
-                        value = "menu"
+                        value = "menuItems"
                 )
         }
 )
@@ -48,21 +48,25 @@ public class Company extends User {
 
     private String companyName;
 
-    @OneToMany
-    @JoinTable(
-            name = "Menu",
-            joinColumns = @JoinColumn(
-                    foreignKey = @ForeignKey(name = "FK_MENU_COMPANY")
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "product_id",
-                    foreignKey = @ForeignKey(name = "FK_MENU_PRODUCT")
-            )
-    )
-    @Builder.Default
-    private List<Product> menu = new ArrayList<>();
+//    @OneToMany
+//    @JoinTable(
+//            name = "Menu",
+//            joinColumns = @JoinColumn(
+//                    foreignKey = @ForeignKey(name = "FK_MENU_COMPANY")
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "product_id",
+//                    foreignKey = @ForeignKey(name = "FK_MENU_PRODUCT")
+//            )
+//    )
+//    @Builder.Default
+//    private List<Product> menu = new ArrayList<>();
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(
+            mappedBy = "company",
+            orphanRemoval = true,
+            cascade = CascadeType.MERGE
+    )
     @Builder.Default
     private List<Item> menuItems = new ArrayList<>();
 
@@ -71,11 +75,23 @@ public class Company extends User {
     private List<Order> ordersReceived = new ArrayList<>();
 
     @PreRemove
-    public void preRemoveActions(){
-        ordersReceived.forEach(o-> o.setCompany(null));
+    public void preRemoveActions() {
+        ordersReceived.forEach(o -> o.setCompany(null));
         ordersReceived.clear();
     }
 
+    //------------------//
+    //* HELPERS - ITEM *//
+    //------------------//
 
+    public void addItemToCompany(Item i){
+       menuItems.add(i);
+       i.setCompany(this);
+    }
+
+    public void removeItemFromCompany(Item i){
+        menuItems.remove(i);
+        i.setCompany(null);
+    }
 
 }

@@ -27,8 +27,8 @@ public class Product {
     private Long id;
 
     private String productName;
-    private String category;
-    private double price;
+//    private String category;
+//    private double price;
 
     @Builder.Default
     private boolean active = true;

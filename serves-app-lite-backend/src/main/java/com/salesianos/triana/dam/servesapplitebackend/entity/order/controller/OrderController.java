@@ -27,27 +27,30 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @JsonView({OrderViews.OrderResponse.class})
-    @PostMapping("/{companyName}")
-    public ResponseEntity<OrderDTO> createNewOrder (
-            @RequestBody List<LineDTO> salesLines,
-            @AuthenticationPrincipal Customer customerLogged,
-            @PathVariable String companyName){
 
-        Order created = orderService
-                .createNewOrder(
-                        (User) customerLogged, companyName,
-                        salesLines.stream().map(LineDTO::of).toList()
-                );
 
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
 
-        return ResponseEntity.created(uri).body(OrderDTO.of(created));
-    }
+//    @JsonView({OrderViews.OrderResponse.class})
+//    @PostMapping("/{companyName}")
+//    public ResponseEntity<OrderDTO> createNewOrder (
+//            @RequestBody List<LineDTO> salesLines,
+//            @AuthenticationPrincipal Customer customerLogged,
+//            @PathVariable String companyName){
+//
+//        Order created = orderService
+//                .createNewOrder(
+//                        (User) customerLogged, companyName,
+//                        salesLines.stream().map(LineDTO::of).toList()
+//                );
+//
+//        URI uri = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("/{id}")
+//                .buildAndExpand(created.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(uri).body(OrderDTO.of(created));
+//    }
 
 
 }

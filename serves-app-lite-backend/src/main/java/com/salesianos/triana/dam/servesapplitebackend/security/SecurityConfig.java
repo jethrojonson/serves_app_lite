@@ -4,6 +4,7 @@ import com.salesianos.triana.dam.servesapplitebackend.security.jwt.access.JwtAut
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -64,7 +65,11 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/product/").hasAnyRole("ADMIN", "COMPANY")
+                .antMatchers("/company/menu/{company_id}").hasAnyRole("CUSTOMER", "COMPANY", "ADMIN")
+                .antMatchers("/company/menu/{item_id}").hasRole("COMPANY")
+                .antMatchers("/company/{company_id}").hasRole("ADMIN")
+                .antMatchers("/company/").hasAnyRole("CUSTOMER", "COMPANY", "ADMIN")
+                .antMatchers("/company/menu/{product_id}").hasRole("COMPANY")
                 .antMatchers("/order/{companyName}").hasRole("CUSTOMER")
                 .antMatchers("/auth/register/admin").hasRole("ADMIN")
                 .anyRequest().authenticated();

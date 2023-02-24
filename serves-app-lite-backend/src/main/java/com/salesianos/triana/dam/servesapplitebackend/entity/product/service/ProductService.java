@@ -56,13 +56,13 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(()->new ProductExceptions.ProductNotFoundException(id));
     }
 
-    public Product updateAProduct(Product toUpdate, Long id){
-        return productRepository.findById(id).map(p ->{
-            p.setCategory(toUpdate.getCategory());
-            p.setPrice(toUpdate.getPrice());
-            return productRepository.save(p);
-                }).orElseThrow(ProductExceptions.ProductNotFoundException::new);
-    }
+//    public Product updateAProduct(Product toUpdate, Long id){
+//        return productRepository.findById(id).map(p ->{
+//            p.setCategory(toUpdate.getCategory());
+//            p.setPrice(toUpdate.getPrice());
+//            return productRepository.save(p);
+//                }).orElseThrow(ProductExceptions.ProductNotFoundException::new);
+//    }
 
     public void retireAProduct(Long id){
         productRepository.delete(

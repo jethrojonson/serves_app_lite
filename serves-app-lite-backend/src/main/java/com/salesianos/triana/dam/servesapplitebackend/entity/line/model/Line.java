@@ -1,6 +1,7 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.line.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.model.Item;
 import com.salesianos.triana.dam.servesapplitebackend.entity.line.model.pk.LinePK;
 import com.salesianos.triana.dam.servesapplitebackend.entity.order.model.Order;
 import com.salesianos.triana.dam.servesapplitebackend.entity.order.view.OrderViews;
@@ -22,12 +23,12 @@ public class Line {
     private LinePK id;
 
     @OneToOne
-    @MapsId("product_id")
+    @MapsId("item_id")
     @JoinColumn(
-            name = "product_id",
-            foreignKey = @ForeignKey(name = "FK_SALESLINES_PRODUCTS")
+            name = "item_id",
+            foreignKey = @ForeignKey(name = "FK_SALESLINES_MENUITEMS")
     )
-    private Product product;
+    private Item item;
 
     @ManyToOne
     @MapsId("order_id")

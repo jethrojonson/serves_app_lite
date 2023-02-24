@@ -35,80 +35,74 @@ public class TestModel {
 
         //PRODUCTS
 
-        Product product1 = Product.builder()
-                .productName("Estrella Galicia")
-                .category("Cerveza")
-                .price(2.00)
-                .build();
+//        Product product1 = Product.builder()
+//                .productName("Estrella Galicia")
+//                .build();
+//
+//        Product product2 = Product.builder()
+//                .productName("Completa")
+//                .build();
+//
+//        Product product3 = Product.builder()
+//                .productName("Café solo")
+//                .build();
+//
+//        productRepository.saveAll(List.of(product1, product2, product3));
 
-        Product product2 = Product.builder()
-                .productName("Completa")
-                .category("Tostada")
-                .price(2.50)
-                .build();
-
-        Product product3 = Product.builder()
-                .productName("Café solo")
-                .category("Café")
-                .price(1.20)
-                .build();
-
-        productRepository.saveAll(List.of(product1, product2, product3));
-
-        //COMPANIES
-
-        Company company1 = Company.builder()
-                .username("chileno69")
-                .cif("A-11111111")
-                .companyName("Café_D&N")
-                .menu(List.of(product1, product2, product3))
-                .roles(Set.of(UserRole.COMPANY))
-                .build();
-
-        companyRepository.saveAll(List.of(company1));
-
-        //CUSTOMERS
-
-        Customer customer1 = Customer.builder()
-                .username("jethro_93")
-                .name("Jerónimo M.")
-                .surname("Pérez González")
-                .email("perez.gojer22@triana.salesianos.edu")
-                .roles(Set.of(UserRole.CUSTOMER))
-                .build();
-
-        customerRepository.saveAll(List.of(customer1));
-
-        //ORDERS - SALES LINES
-
-        //1º ORDER
-
-        Order order1 = Order.builder().build();
-
-        orderRepository.saveAll(List.of(order1));
-
-        order1.addToCustomer(customer1);
-        order1.addToCompany(company1);
-
-
-        Line line1 = Line.builder()
-                .id(
-                        LinePK.builder()
-                                .order_id(order1.getId())
-                                .product_id(product1.getId())
-                                .build()
-                )
-                .order(order1)
-                .product(product1)
-                .quantity(5)
-                .subTotal(product1.getPrice()*5)
-                .build();
-
-        line1.addToOrder(order1);
-
-        order1.setTotal(order1.getSalesLines().stream().mapToDouble(Line::getSubTotal).sum());
-
-        orderRepository.saveAll(List.of(order1));
+//        //COMPANIES
+//
+//        Company company1 = Company.builder()
+//                .username("chileno69")
+//                .cif("A-11111111")
+//                .companyName("Café_D&N")
+//                .menu(List.of(product1, product2, product3))
+//                .roles(Set.of(UserRole.COMPANY))
+//                .build();
+//
+//        companyRepository.saveAll(List.of(company1));
+//
+//        //CUSTOMERS
+//
+//        Customer customer1 = Customer.builder()
+//                .username("jethro_93")
+//                .name("Jerónimo M.")
+//                .surname("Pérez González")
+//                .email("perez.gojer22@triana.salesianos.edu")
+//                .roles(Set.of(UserRole.CUSTOMER))
+//                .build();
+//
+//        customerRepository.saveAll(List.of(customer1));
+//
+//        //ORDERS - SALES LINES
+//
+//        //1º ORDER
+//
+//        Order order1 = Order.builder().build();
+//
+//        orderRepository.saveAll(List.of(order1));
+//
+//        order1.addToCustomer(customer1);
+//        order1.addToCompany(company1);
+//
+//
+//        Line line1 = Line.builder()
+//                .id(
+//                        LinePK.builder()
+//                                .order_id(order1.getId())
+//                                .product_id(product1.getId())
+//                                .build()
+//                )
+//                .order(order1)
+//                .product(product1)
+//                .quantity(5)
+//                .subTotal(product1.getPrice()*5)
+//                .build();
+//
+//        line1.addToOrder(order1);
+//
+//        order1.setTotal(order1.getSalesLines().stream().mapToDouble(Line::getSubTotal).sum());
+//
+//        orderRepository.saveAll(List.of(order1));
 
 
 

@@ -1,9 +1,13 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.dto.ItemDTO;
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.model.Item;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.dto.CompanyDTO;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model.Company;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.service.CompanyService;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.view.CompanyViews;
+import com.salesianos.triana.dam.servesapplitebackend.search.util.PageDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,10 +17,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +37,54 @@ import java.util.UUID;
 public class CompanyController {
 
     private final CompanyService companyService;
+
+
+    @PostMapping("/menu/{product_id}")
+    public ResponseEntity<ItemDTO> addProductToMenu(
+            @AuthenticationPrincipal Company company,
+            @PathVariable Long product_id,
+            @RequestBody ItemDTO toAdd){
+        Item added =companyService.addProductToMenu(company, product_id, ItemDTO.of(toAdd));
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(added.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body( ItemDTO.of(added));
+    }
+
+    @JsonView(CompanyViews.CompanySimpleResponse.class)
+    @GetMapping("/menu/{company_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CompanyDTO getMenu(@PathVariable String company_id){
+        return CompanyDTO.of(companyService.getCompany(company_id));
+    }
+
+    @JsonView(CompanyViews.FullCompanyResponse.class)
+    @GetMapping("/{company_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CompanyDTO getCompany (@PathVariable String company_id){
+        return CompanyDTO.of(companyService.getCompany(company_id));
+    }
+
+    @JsonView(CompanyViews.CompanyListItem.class)
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public PageDTO<CompanyDTO> getAllCompanies(
+            @RequestParam(value = "s", defaultValue = "") String s,
+            @PageableDefault(size = 25, page = 0) Pageable pageable
+            ){
+        return PageDTO.of(companyService.searchAll(s,pageable).map(CompanyDTO::of));
+    }
+
+    @PutMapping("/menu/{item_id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteItemFromMenu(@PathVariable Long item_id,
+                                   @AuthenticationPrincipal Company loggedCompany){
+        companyService.deleteItemFromMenu(loggedCompany,item_id);
+    }
+
+
 
 //    //POST: NEW COMPANY path --> "/company/"
 ////    @Operation(summary = "Add new company")

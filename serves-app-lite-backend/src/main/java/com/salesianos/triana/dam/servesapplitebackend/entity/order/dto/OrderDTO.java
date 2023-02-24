@@ -45,16 +45,16 @@ public class OrderDTO {
     @JsonView(OrderViews.OrderResponse.class)
     private double total;
 
-    public static OrderDTO of (Order o){
-        return OrderDTO.builder()
-                .id(o.getId())
-                .orderedAt(o.getOrderedAt())
-                .companyName(o.getCompanyName())
-                .username(o.getUsername())
-                .salesLines(o.getSalesLines().stream().map(LineDTO::of).toList())
-                .total(o.getTotal())
-                .build();
-    }
+//    public static OrderDTO of (Order o){
+//        return OrderDTO.builder()
+//                .id(o.getId())
+//                .orderedAt(o.getOrderedAt())
+//                .companyName(o.getCompanyName())
+//                .username(o.getUsername())
+//                .salesLines(o.getSalesLines().stream().map(LineDTO::of).toList())
+//                .total(o.getTotal())
+//                .build();
+//    }
 
     public static Order of (OrderDTO o){
         return Order.builder()

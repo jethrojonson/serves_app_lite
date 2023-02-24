@@ -36,24 +36,24 @@ public class ProductDTO {
     @Builder.Default
     private boolean active = true;
 
-    public static ProductDTO of (Product p){
-        return ProductDTO.builder()
-                .id(p.getId())
-                .productName(p.getProductName())
-                .category(p.getCategory())
-                .price(p.getPrice())
-                .active(p.isActive())
-                .build();
-    }
-
-    public static Product of (ProductDTO p){
-        return Product.builder()
-                .id(p.getId())
-                .productName(p.getProductName())
-                .category(p.getCategory())
-                .price(p.getPrice())
-                .active(p.isActive())
-                .build();
-    }
+//    public static ProductDTO of (Product p){
+//        return ProductDTO.builder()
+//                .id(p.getId())
+//                .productName(p.getProductName())
+//                .category(p.getCategory())
+//                .price(p.getPrice())
+//                .active(p.isActive())
+//                .build();
+//    }
+//
+//    public static Product of (ProductDTO p){
+//        return Product.builder()
+//                .id(p.getId())
+//                .productName(p.getProductName())
+//                .category(p.getCategory())
+//                .price(p.getPrice())
+//                .active(p.isActive())
+//                .build();
+//    }
 
 }

@@ -32,11 +32,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @EntityGraph(value = "company-orders", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Company> findCompanyByCompanyName(String companyName);
 
-    @Query("""
-            SELECT p
-            FROM Product p
-            WHERE p.id = ?1
-            """)
-    Optional<Product> findProductById(Long id);
+//    @Query("""
+//            SELECT i
+//            FROM Item i
+//            WHERE i.id = ?1
+//            """)
+//    Optional<Product> findItemById(Long id);
 
 }

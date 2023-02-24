@@ -3,6 +3,7 @@ package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.dto.ItemDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.order.view.OrderViews;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.dto.ProductDTO;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
@@ -22,19 +23,19 @@ import java.util.UUID;
 @Builder
 public class CompanyDTO {
 
-    @JsonView({CompanyViews.CompanyResponse.class})
+    @JsonView({CompanyViews.CompanyResponse.class, CompanyViews.CompanyListItem.class})
     private UUID id;
 
     @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class})
     private String cif;
 
-    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class, CompanyViews.CompanyUpdate.class})
+    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class, CompanyViews.CompanyUpdate.class, CompanyViews.CompanyListItem.class})
     private String companyName;
 
     @JsonView({CompanyViews.NewCompany.class, CompanyViews.CompanyResponse.class})
     private String username;
 
-    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class})
+    @JsonView({CompanyViews.NewCompany.class,CompanyViews.CompanyResponse.class,CompanyViews.CompanyListItem.class})
     private String avatar;
 
     @JsonView({CompanyViews.NewCompany.class})
@@ -47,9 +48,10 @@ public class CompanyDTO {
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private LocalDateTime subscribedAt;
 
-    @JsonView({CompanyViews.FullCompanyResponse.class})
+    @JsonView({CompanyViews.FullCompanyResponse.class,CompanyViews.CompanySimpleResponse.class})
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Builder.Default
-    private List<ProductDTO> menu = new ArrayList<>();
+    private List<ItemDTO> menu = new ArrayList<>();
 
 
     public static Company of (CompanyDTO c){
@@ -71,7 +73,7 @@ public class CompanyDTO {
                 .companyName(c.getCompanyName())
                 .username(c.getUsername())
                 .subscribedAt(c.getCreatedAt())
-//                .menu(c.getMenu().stream().map(ProductDTO::of).toList())
+                .menu(c.getMenuItems().stream().map(ItemDTO::of).toList())
                 .build();
     }
 }

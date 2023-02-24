@@ -1,11 +1,22 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.service;
 
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.exception.ItemExceptions;
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.model.Item;
+import com.salesianos.triana.dam.servesapplitebackend.entity.product.exception.ProductExceptions;
+import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.roles.UserRole;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.repository.UserRepository;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.dto.CompanyDTO;
+import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.exception.CompanyExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model.Company;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.repository.CompanyRepository;
+import com.salesianos.triana.dam.servesapplitebackend.search.spec.GenericSpecificationBuilder;
+import com.salesianos.triana.dam.servesapplitebackend.search.util.SearchCriteria;
+import com.salesianos.triana.dam.servesapplitebackend.search.util.SearchCriteriaExtractor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +31,45 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
+    public Item addProductToMenu(Company company, Long product_id, Item toAdd){
+        company = companyRepository.findById(company.getId())
+                .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
+        Product product = companyRepository.findProductById(product_id)
+                .orElseThrow(ProductExceptions.ProductNotFoundException::new);
+        toAdd.setProduct(product);
+        company.addItemToCompany(toAdd);
+        companyRepository.save(company);
+        return toAdd;
+    }
+
+    public Company getCompany (String company_id){
+        UUID id = UUID.fromString(company_id);
+        return companyRepository.findById(id)
+                .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
+    }
+
+    public Page<Company> searchAll(String searchCriteria, Pageable pageable){
+        List<SearchCriteria> params = SearchCriteriaExtractor.extractSearchCriteriaList(searchCriteria);
+        GenericSpecificationBuilder companySpecificationBuilder =
+                GenericSpecificationBuilder.builder()
+                        .params(params)
+                        .type(Company.class)
+                        .build();
+        Specification<Company> spec = companySpecificationBuilder.build();
+        Page<Company> result = companyRepository.findAll(spec,pageable);
+        if(result.isEmpty())
+            throw new CompanyExceptions.CompanyNotFoundException();
+        return result;
+    }
+
+    public void deleteItemFromMenu(Company company, Long item_id){
+        company = companyRepository.findById(company.getId())
+                .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
+        company.getMenuItems().remove(companyRepository.findItemById(item_id)
+                .orElseThrow(()->new ItemExceptions.ItemNotFoundException(item_id)));
+        companyRepository.save(company);
+    }
+
     public Company addCompany(Company company){
         return companyRepository.save(company);
     }
@@ -27,6 +77,9 @@ public class CompanyService {
     public Optional<Company> findByCompanyName(String companyName){
         return companyRepository.findFirstByCompanyName(companyName);
     }
+
+
+
 //
 //
 //

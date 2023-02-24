@@ -1,5 +1,6 @@
 package com.salesianos.triana.dam.servesapplitebackend.error;
 
+import com.salesianos.triana.dam.servesapplitebackend.entity.item.exception.ItemExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.exception.ProductExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.exception.CompanyExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.customer.exception.CustomerExceptions;
@@ -50,6 +51,15 @@ public class GlobalRestControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({CustomerExceptions.CustomerNotFoundException.class})
     public ResponseEntity<?> handleCustomerNotFoundException (EntityNotFoundException ex, WebRequest request){
+        return buildApiError(ex.getMessage(), request, HttpStatus.NOT_FOUND);
+    }
+
+    //********************//
+    //* ITEMS EXCEPTIONS *//
+    //********************//
+
+    @ExceptionHandler({ItemExceptions.ItemNotFoundException.class})
+    public ResponseEntity<?> handleItemNotFoundException (EntityNotFoundException ex, WebRequest request){
         return buildApiError(ex.getMessage(), request, HttpStatus.NOT_FOUND);
     }
 

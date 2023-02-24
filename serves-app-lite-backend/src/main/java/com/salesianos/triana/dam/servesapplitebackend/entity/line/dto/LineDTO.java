@@ -24,22 +24,22 @@ public class LineDTO {
     @JsonView(OrderViews.OrderResponse.class)
     private double subTotal;
 
-    public static Line of (LineDTO l){
-        return Line.builder()
-                .id(
-                        LinePK.builder()
-                                .product_id(l.getProduct_id())
-                                .build()
-                )
-                .quantity(l.getQuantity())
-                .build();
-    }
-
-    public static LineDTO of (Line l){
-        return LineDTO.builder()
-                .productName(l.getProduct().getProductName())
-                .quantity(l.getQuantity())
-                .subTotal(l.getSubTotal())
-                .build();
-    }
+//    public static Line of (LineDTO l){
+//        return Line.builder()
+//                .id(
+//                        LinePK.builder()
+//                                .product_id(l.getProduct_id())
+//                                .build()
+//                )
+//                .quantity(l.getQuantity())
+//                .build();
+//    }
+//
+//    public static LineDTO of (Line l){
+//        return LineDTO.builder()
+//                .productName(l.getProduct().getProductName())
+//                .quantity(l.getQuantity())
+//                .subTotal(l.getSubTotal())
+//                .build();
+//    }
 }

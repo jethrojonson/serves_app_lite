@@ -9,4 +9,8 @@ public interface CompanyViews {
     public class CompanyUpdate{}
 
     public class FullCompanyResponse extends CompanyResponse{}
+
+    public class CompanyListItem{}
+
+    public class CompanySimpleResponse extends CompanyListItem{}
 }
