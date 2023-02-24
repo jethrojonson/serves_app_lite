@@ -1,5 +1,3 @@
-#GENERAL
-* Conversiones de los DTO en los controladores
-
-#SOFT DELETE
-* SOFT DELETE --> retirar productos/ deshabilitar usuarios
+* Soft Delete --> configurar los filtros para los roles.
+* Authentication.getPrincipal() --> solucionar problema de fetching
+* Controller/Security --> configurar autorización de acceso
