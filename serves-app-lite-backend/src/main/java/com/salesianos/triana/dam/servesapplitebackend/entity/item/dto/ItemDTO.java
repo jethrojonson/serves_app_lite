@@ -14,13 +14,13 @@ public class ItemDTO {
 
     private String companyName;
 
-    @JsonView({CompanyViews.CompanySimpleResponse.class})
+    @JsonView({CompanyViews.CompanySimpleResponse.class, CompanyViews.FullCompanyResponse.class})
     private String productName;
 
-    @JsonView({CompanyViews.CompanySimpleResponse.class})
+    @JsonView({CompanyViews.CompanySimpleResponse.class, CompanyViews.FullCompanyResponse.class})
     private double price;
 
-    @JsonView({CompanyViews.CompanySimpleResponse.class})
+    @JsonView({CompanyViews.CompanySimpleResponse.class, CompanyViews.FullCompanyResponse.class})
     private String category;
 
     public static Item of(ItemDTO i){

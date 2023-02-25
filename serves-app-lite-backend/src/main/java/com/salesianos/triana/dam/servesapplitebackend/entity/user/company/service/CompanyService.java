@@ -2,6 +2,7 @@ package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.servi
 
 import com.salesianos.triana.dam.servesapplitebackend.entity.item.exception.ItemExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.item.model.Item;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.model.Order;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.exception.ProductExceptions;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.base.model.roles.UserRole;
@@ -20,10 +21,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-    public Item addProductToMenu(Company company, Long product_id, Item toAdd){
+    public Item addProductToMenu(Company company, Long product_id, Item toAdd) {
         company = companyRepository.findById(company.getId())
                 .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
         Product product = companyRepository.findProductById(product_id)
@@ -42,13 +41,17 @@ public class CompanyService {
         return toAdd;
     }
 
-    public Company getCompany (String company_id){
+    public Company getCompany(String company_id) {
         UUID id = UUID.fromString(company_id);
-        return companyRepository.findById(id)
+        Company company = companyRepository.findById(id)
                 .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
+        company.setOrdersReceived(companyRepository.loadOrdersReceived(id));
+        return company;
+//        return companyRepository.findById(id)
+//                .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
     }
 
-    public Page<Company> searchAll(String searchCriteria, Pageable pageable){
+    public Page<Company> searchAll(String searchCriteria, Pageable pageable) {
         List<SearchCriteria> params = SearchCriteriaExtractor.extractSearchCriteriaList(searchCriteria);
         GenericSpecificationBuilder companySpecificationBuilder =
                 GenericSpecificationBuilder.builder()
@@ -56,32 +59,32 @@ public class CompanyService {
                         .type(Company.class)
                         .build();
         Specification<Company> spec = companySpecificationBuilder.build();
-        Page<Company> result = companyRepository.findAll(spec,pageable);
-        if(result.isEmpty())
+        Page<Company> result = companyRepository.findAll(spec, pageable);
+        if (result.isEmpty())
             throw new CompanyExceptions.CompanyNotFoundException();
+        result.forEach(c->c.setOrdersReceived(companyRepository.loadOrdersReceived(c.getId())));
         return result;
     }
 
-    public void deleteItemFromMenu(Company company, Long item_id){
+    public void deleteItemFromMenu(Company company, Long item_id) {
         company = companyRepository.findById(company.getId())
                 .orElseThrow(CompanyExceptions.CompanyNotFoundException::new);
         Item item = companyRepository.findItemById(item_id)
-                .orElseThrow(()->new ItemExceptions.ItemNotFoundException(item_id));
-        if(company.getMenuItems().contains(item))
-
-        company.getMenuItems().remove(companyRepository.findItemById(item_id)
-                .orElseThrow(()->new ItemExceptions.ItemNotFoundException(item_id)));
+                .orElseThrow(() -> new ItemExceptions.ItemNotFoundException(item_id));
+        if(company.getMenuItems().stream().anyMatch(i-> i.getId()==item_id))
+           company.removeItemFromCompany(item);
+        else
+            throw new ItemExceptions.ItemNotInMenuException(item_id);
         companyRepository.save(company);
     }
 
-    public Company addCompany(Company company){
+    public Company addCompany(Company company) {
         return companyRepository.save(company);
     }
 
-    public Optional<Company> findByCompanyName(String companyName){
+    public Optional<Company> findByCompanyName(String companyName) {
         return companyRepository.findFirstByCompanyName(companyName);
     }
-
 
 
 //

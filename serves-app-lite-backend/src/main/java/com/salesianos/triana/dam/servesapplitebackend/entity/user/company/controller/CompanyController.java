@@ -39,7 +39,7 @@ public class CompanyController {
     private final CompanyService companyService;
 
 
-    @PostMapping("/menu/{product_id}")
+    @PostMapping("/menu/item/{product_id}")
     public ResponseEntity<ItemDTO> addProductToMenu(
             @AuthenticationPrincipal Company company,
             @PathVariable Long product_id,
@@ -77,7 +77,8 @@ public class CompanyController {
         return PageDTO.of(companyService.searchAll(s,pageable).map(CompanyDTO::of));
     }
 
-    @DeleteMapping("/menu/{item_id}")
+
+    @DeleteMapping("/menu/item/{item_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteItemFromMenu(@PathVariable Long item_id,
                                    @AuthenticationPrincipal Company loggedCompany){

@@ -1,6 +1,7 @@
 package com.salesianos.triana.dam.servesapplitebackend.entity.user.company.repository;
 
 import com.salesianos.triana.dam.servesapplitebackend.entity.item.model.Item;
+import com.salesianos.triana.dam.servesapplitebackend.entity.order.model.Order;
 import com.salesianos.triana.dam.servesapplitebackend.entity.product.model.Product;
 import com.salesianos.triana.dam.servesapplitebackend.entity.user.company.model.Company;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,23 @@ public interface CompanyRepository extends JpaRepository<Company, UUID>, JpaSpec
     Optional<Company> findById(UUID id);
 
     @Query("""
+            SELECT DISTINCT i
+            FROM Item i
+            LEFT JOIN FETCH i.company c
+            WHERE c.id = :id
+            """)
+    List<Item> loadMenuItems(UUID id);
+
+    @Query("""
+            SELECT DISTINCT o
+            FROM Order o
+            LEFT JOIN FETCH o.company c
+            WHERE c.id = :id
+            """)
+    List<Order> loadOrdersReceived(UUID id);
+
+
+    @Query("""
             SELECT p
             FROM Product p
             WHERE p.id = :id
@@ -43,4 +61,6 @@ public interface CompanyRepository extends JpaRepository<Company, UUID>, JpaSpec
             WHERE i.id = :id
             """)
     Optional<Item> findItemById(Long id);
+
+
 }

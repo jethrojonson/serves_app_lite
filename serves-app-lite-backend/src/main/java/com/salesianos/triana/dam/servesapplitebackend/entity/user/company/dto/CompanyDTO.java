@@ -48,11 +48,13 @@ public class CompanyDTO {
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private LocalDateTime subscribedAt;
 
+    @JsonView({CompanyViews.FullCompanyResponse.class})
+    private int totalOrdersServed;
+
     @JsonView({CompanyViews.FullCompanyResponse.class,CompanyViews.CompanySimpleResponse.class})
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Builder.Default
     private List<ItemDTO> menu = new ArrayList<>();
-
 
     public static Company of (CompanyDTO c){
         return Company.builder()
@@ -74,6 +76,7 @@ public class CompanyDTO {
                 .username(c.getUsername())
                 .subscribedAt(c.getCreatedAt())
                 .menu(c.getMenuItems().stream().map(ItemDTO::of).toList())
+                .totalOrdersServed(c.getOrdersReceived().size())
                 .build();
     }
 }

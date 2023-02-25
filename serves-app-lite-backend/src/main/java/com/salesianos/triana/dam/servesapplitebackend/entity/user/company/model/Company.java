@@ -17,6 +17,7 @@ import java.util.List;
                 @NamedAttributeNode(
                         value = "menuItems"
                 )
+
         }
 )
 @NamedEntityGraph(
@@ -25,6 +26,18 @@ import java.util.List;
                 @NamedAttributeNode(
                         value = "ordersReceived"
                 )
+        }
+)
+@NamedEntityGraph(
+        name = "company-menu&orders",
+        attributeNodes = {
+                @NamedAttributeNode(
+                        value = "menuItems"
+                ),
+                @NamedAttributeNode(
+                        value = "ordersReceived"
+                )
+
         }
 )
 @Entity
@@ -65,8 +78,7 @@ public class Company extends User {
     @OneToMany(
             mappedBy = "company",
             orphanRemoval = true,
-            cascade = CascadeType.MERGE
-    )
+            cascade = CascadeType.ALL)
     @Builder.Default
     private List<Item> menuItems = new ArrayList<>();
 
@@ -90,7 +102,7 @@ public class Company extends User {
     }
 
     public void removeItemFromCompany(Item i){
-        menuItems.remove(i);
+        menuItems.removeIf(item->item.getId()==i.getId());
         i.setCompany(null);
     }
 
